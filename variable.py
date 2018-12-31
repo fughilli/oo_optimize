@@ -1,5 +1,3 @@
-
-
 class Expression(object):
     def __init__(self, op, l, r):
         self.l = l
@@ -9,11 +7,20 @@ class Expression(object):
     def __add__(self, other):
         return Expression('+', self, other)
 
+    def __radd__(self, other):
+        return Expression('+', other, self)
+
     def __sub__(self, other):
         return Expression('-', self, other)
+    
+    def __rsub__(self, other):
+        return Expression('-', other, self)
 
     def __mul__(self, other):
         return Expression('*', self, other)
+
+    def __rmul__(self, other):
+        return Expression('*', other, other)
 
     def __div__(self, other):
         return Expression('/', self, other)
@@ -50,11 +57,20 @@ class Vector(object):
     def __add__(self, other):
         if not isinstance(other, Vector):
             raise Exception('Other operand must be Vector for operator "+"')
+        return Vector([elem + other_elem for elem,other_elem in zip(self.members, other.members)])
+
+    def __sub__(self, other):
+        if not isinstance(other, Vector):
+            raise Exception('Other operand must be Vector for operator "+"')
+        return Vector([elem - other_elem for elem,other_elem in zip(self.members, other.members)])
 
     def __mul__(self, other):
         if not _IsScalar(other):
-            raise Exception()
+            raise Exception('Vector multiplier must be scalar')
+        return Vector([elem * other for elem in self.members])
 
+    def Magnitude(self):
+        return sum([elem ** 2 for elem in self.members]) ** 0.5
 
 
 class Variable(Expression):

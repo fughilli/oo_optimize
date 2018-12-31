@@ -12,7 +12,7 @@ class Circle(Compound):
         self.origin = Vector((self.V("o_x"), self.V("o_y")))
 
 def Tangent(a, b):
-    (a.origin - b.origin).mag() == (a.radius + b.radius)
+    (a.origin - b.origin).Magnitude() == (a.radius + b.radius)
 
 class Screw(Compound):
     def __init__(self, name):
@@ -28,10 +28,6 @@ if __name__ == "__main__":
     c1.origin == Vector((0,0))
     c2 = Circle('circle2')
     Tangent(c1, c2)
-    #registry.Bind(c1.radius, '>', c1.area)
-    #registry.Bind(c1.radius, '>', 0)
-    #registry.Bind(c1.area, '<', 5)
-    #registry.Bind(c1.origin, '=', (0,0))
     print(registry.Dump())
 
 
