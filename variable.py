@@ -21,8 +21,40 @@ class Expression(object):
     def __pow__(self, other):
         return Expression('**', self, other)
 
+    def __eq__(self, other):
+        registry.Bind(self, '=', other)
+
+    def __gt__(self, other):
+        registry.Bind(self, '>', other)
+
+    def __lt__(self, other):
+        registry.Bind(self, '<', other)
+
+    def __ge__(self, other):
+        registry.Bind(self, '>=', other)
+
+    def __le__(self, other):
+        registry.Bind(self, '<=', other)
+
     def __repr__(self):
         return "(%s %s %s)" % (repr(self.l), self.op, repr(self.r))
+
+def _IsScalar(c):
+    return isinstance(other, float) or isinstance(other, int)
+
+class Vector(object):
+    def __init__(self, members):
+        self.members = members
+
+
+    def __add__(self, other):
+        if not isinstance(other, Vector):
+            raise Exception('Other operand must be Vector for operator "+"')
+
+    def __mul__(self, other):
+        if not _IsScalar(other):
+            raise Exception()
+
 
 
 class Variable(Expression):
