@@ -1,0 +1,15 @@
+Features:
+term rewriting
+compounds should be able to override operators
+  ex: lambda Xyz : Vector(("x", "y", "z"))
+      vec1 == Xyz()
+      vec2 == Xyz()
+      vec1 > Vector(0, 0, 0)
+      vec2 == Vector(1, 1, 1)
+      vec1.dot(vec2) < 1    
+
+interfaces
+named maps of terms are zipped during comparison
+
+Wrapper(<expr>, ('term1, 'term2')) = ...
+you can substitute, as long as the replacemnt map has the same terms

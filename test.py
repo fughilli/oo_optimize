@@ -1,33 +1,32 @@
 from __future__ import print_function
 
 import math
-from variable import Compound, registry, Vector
+import variable
+import unittest
+from unittest.mock import MagicMock
 
-class Circle(Compound):
-    def __init__(self, name):
-        self.name = name
-        self.radius = self.V("r")
-        self.circumfrence = self.radius * 2 * math.pi
-        self.area = self.radius ** 2 * math.pi
-        self.origin = Vector((self.V("o_x"), self.V("o_y")))
 
-def Tangent(a, b):
-    (a.origin - b.origin).Magnitude() == (a.radius + b.radius)
+class VariableTest(unittest.TestCase):
+    def test_variable_name_is_correct(self):
+        dummy_registry = None
+        a = variable.Variable(dummy_registry, 'a')
+        self.assertEqual(a.name, 'a')
 
-class Screw(Compound):
-    def __init__(self, name):
-        self.name = name
-        self.radius = Compound.V("r")
-        self.pitch = self.V("pitch")
+    def test_registry_makes_variable_with_correct_name(self):
+        a = variable.registry.New('a')
+        self.assertEqual(a.name, 'a')
+
+    def test_bind_populates_registry(self):
+        a = variable.registry.New('a')
+        b = variable.registry.New('b')
+
+        a < b
+
+        self.assertEqual(len(variable.registry.e_list), 1)
+        self.assertEqual(variable.registry.e_list[0].op, '<')
+        self.assertEqual(variable.registry.e_list[0].l.name, a.name)
+        self.assertEqual(variable.registry.e_list[0].r.name, b.name)
+
 
 if __name__ == "__main__":
-    c1 = Circle('circle1')
-    c1.radius > c1.area
-    c1.radius > 0
-    c1.area < 5
-    c1.origin == Vector((0,0))
-    c2 = Circle('circle2')
-    Tangent(c1, c2)
-    print(registry.Dump())
-
-
+    unittest.main()
